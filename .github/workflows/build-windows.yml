@@ -9,7 +9,7 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Configure (CMake, x64)
         run: cmake -B build -A x64 -DCMAKE_BUILD_TYPE=Release
@@ -24,13 +24,13 @@ jobs:
         run: cmake --build build --config Release --target Charlie_VST3 Charlie_Standalone --parallel
 
       - name: Upload VST3
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Charlie-VST3-Windows-x64
           path: build/Charlie_artefacts/Release/VST3/Charlie.vst3
 
       - name: Upload Standalone
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Charlie-Standalone-Windows-x64
           path: build/Charlie_artefacts/Release/Standalone/Charlie.exe

@@ -19,8 +19,8 @@ static double toneDb (const std::vector<float>& x, double freq)
     const size_t N = x.size();
     for (size_t n = 0; n < N; ++n)
     {
-        const double w = 0.5 - 0.5 * std::cos (2 * M_PI * n / (N - 1));
-        acc += (double) x[n] * w * std::polar (1.0, -2 * M_PI * freq * n / SR);
+        const double w = 0.5 - 0.5 * std::cos (2 * kPiD * n / (N - 1));
+        acc += (double) x[n] * w * std::polar (1.0, -2 * kPiD * freq * n / SR);
         wsum += w;
     }
     return 20 * std::log10 (std::abs (acc) * 2 / wsum + 1e-12);
@@ -81,7 +81,7 @@ static double filterGainDb (FilterType t, float fc, float res, float testHz)
 {
     VoiceFilter f; f.reset();
     const int N = 1 << 14; std::vector<float> y (N);
-    for (int i = 0; i < N; ++i) y[i] = f.process (t, 0.05f * std::sin (2 * M_PI * testHz * i / SR), fc, res, SR);
+    for (int i = 0; i < N; ++i) y[i] = f.process (t, 0.05f * std::sin (2 * kPiD * testHz * i / SR), fc, res, SR);
     std::vector<float> tail (y.begin() + N / 2, y.end());
     return toneDb (tail, testHz) - 20 * std::log10 (0.05);
 }
