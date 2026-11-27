@@ -14,7 +14,11 @@ namespace
     NormalisableRange<float> timeRange (float lo, float hi)
     {
         NormalisableRange<float> r (lo, hi);
-        r.setSkewForCentre (std::sqrt (lo * hi) * 0.6f);
+        // Centre de la courbe : moyenne géométrique si lo > 0. Si lo == 0 (GLIDE, LFO DELAY),
+        // la moyenne géométrique vaut 0 = début de plage -> skew nul -> NaN. On place alors
+        // le centre à 10 % de la plage (mi-course = 0,2 s pour GLIDE, 0,5 s pour DELAY).
+        const float centre = lo > 0.0f ? std::sqrt (lo * hi) * 0.6f : lo + (hi - lo) * 0.1f;
+        r.setSkewForCentre (centre);
         return r;
     }
 
@@ -161,7 +165,7 @@ void fillSynthParams (const ParamPointers& pp, plexis::SynthParams& sp, double b
 {
     using namespace plexis;
     auto i = [&] (const char* id) { return (int) std::lround (pp.get (id)); };
-    auto f = [&] (const char* id) { return pp.get (id); };
+    auto f = [&] (const char* id) { const float v = pp.get (id); return std::isfinite (v) ? v : 0.0f; };
     auto b = [&] (const char* id) { return pp.get (id) > 0.5f; };
 
     sp.osc[0].wave   = (Waveform) i (ParamID::osc1Wave);

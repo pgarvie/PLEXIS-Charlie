@@ -258,7 +258,7 @@ void CharlieEditor::paint (juce::Graphics& g)
     g.drawText ("VOICES", getWidth() - 214, 8, 60, 14, juce::Justification::left);
     for (int i = 0; i < 8; ++i)
         PlexisLookAndFeel::drawLed (g, { (float) (getWidth() - 214 + i * 16), 26.0f, 12.0f, 8.0f }, i < voicesOn, false);
-    g.drawText ("v1.0.0", getWidth() - 74, 8, 60, 14, juce::Justification::right);
+    g.drawText ("v1.0.1", getWidth() - 74, 8, 60, 14, juce::Justification::right);
 
     // ---- sections -------------------------------------------------------------------
     for (auto& s : sections)

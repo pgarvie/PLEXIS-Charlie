@@ -123,6 +123,11 @@ void CharlieProcessor::setStateInformation (const void* data, int sizeInBytes)
             auto vt = juce::ValueTree::fromXml (*xml);
             currentProgram = vt.getProperty ("program", 0);
             apvts.replaceState (vt);
+
+            // Projets sauvegardés avec la v1.0.0 : GLIDE / LFO DELAY pouvaient contenir NaN.
+            for (auto* prm : getParameters())
+                if (! std::isfinite (prm->getValue()))
+                    prm->setValueNotifyingHost (prm->getDefaultValue());
         }
 }
 
